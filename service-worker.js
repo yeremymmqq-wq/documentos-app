@@ -1,4 +1,4 @@
-const CACHE_NAME = 'documentos-app-v1';
+const CACHE_NAME = 'documentos-app-v2';
 const ASSETS = [
   './',
   './index.html',
