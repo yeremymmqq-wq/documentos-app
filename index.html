@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Generador de Documentos</title>
+<link rel="stylesheet" href="styles.css">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Documentos">
+<meta name="theme-color" content="#0f172a">
+</head>
+<body>
+
+<header class="app-header">
+  <h1>Generador de Documentos</h1>
+</header>
+
+<!-- ===================== VISTA: HOME ===================== -->
+<section id="view-home" class="view active">
+  <p class="hint" style="padding:0 16px;">Elige el tipo de documento que necesitas generar.</p>
+  <div class="doc-grid" id="docGrid"></div>
+</section>
+
+<!-- ===================== VISTA: FORMULARIO ===================== -->
+<section id="view-form" class="view">
+  <div class="form-topbar">
+    <button id="btnBackHome" class="btn-link">&larr; Volver</button>
+    <h2 id="formTitle"></h2>
+  </div>
+  <div class="card" id="formFields"></div>
+  <div class="card">
+    <button id="btnGenerate" class="btn-primary btn-lg">Generar documento</button>
+  </div>
+</section>
+
+<!-- ===================== VISTA: PREVIEW ===================== -->
+<section id="view-preview" class="view">
+  <div class="form-topbar no-print">
+    <button id="btnBackForm" class="btn-link">&larr; Editar</button>
+    <button id="btnPrint" class="btn-primary">Descargar / Imprimir PDF</button>
+  </div>
+  <div id="printArea">
+    <div class="doc-page" id="docContent"></div>
+  </div>
+</section>
+
+<footer class="app-footer no-print">Documentos generados localmente en tu dispositivo, sin conexión a internet.</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

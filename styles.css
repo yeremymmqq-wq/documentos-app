@@ -1,0 +1,185 @@
+:root{
+  --bg:#0f172a;
+  --card:#1a2540;
+  --card-2:#20304f;
+  --accent:#22c55e;
+  --text:#e5edf7;
+  --text-dim:#93a3bd;
+  --border:#2c3c5e;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  padding-bottom:32px;
+}
+
+.app-header{padding:20px 16px 12px;}
+.app-header h1{font-size:1.25rem;margin:0;}
+
+.view{display:none;}
+.view.active{display:block;}
+
+.hint{
+  font-size:0.85rem;
+  color:var(--text-dim);
+  line-height:1.4;
+  margin:0 0 12px;
+}
+
+.doc-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  padding:0 16px;
+}
+.doc-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:18px 12px;
+  text-align:center;
+  color:var(--text);
+  font-weight:700;
+  font-size:0.95rem;
+}
+.doc-card small{
+  display:block;
+  font-weight:400;
+  color:var(--text-dim);
+  font-size:0.75rem;
+  margin-top:4px;
+}
+.doc-card:active{background:var(--card-2);}
+
+.form-topbar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  gap:12px;
+}
+.form-topbar h2{
+  font-size:1rem;
+  margin:0;
+  flex:1;
+}
+.btn-link{
+  background:none;
+  border:none;
+  color:var(--accent);
+  font-size:0.95rem;
+  font-weight:600;
+  padding:6px 0;
+}
+
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:16px;
+  margin:0 16px 14px;
+}
+
+label{
+  display:block;
+  font-size:0.82rem;
+  color:var(--text-dim);
+  margin:12px 0 6px;
+}
+label:first-child{margin-top:0;}
+
+input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea, select{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card-2);
+  color:var(--text);
+  font-size:1rem;
+  font-family:inherit;
+}
+textarea{resize:vertical;}
+
+.btn-primary{
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  font-size:1rem;
+  font-weight:700;
+  background:var(--accent);
+  color:#06210f;
+}
+.btn-lg{width:100%;}
+
+/* ---- Documento (pantalla) ---- */
+#printArea{
+  padding:0 16px;
+}
+.doc-page{
+  background:#fff;
+  color:#111;
+  padding:24px 20px;
+  border-radius:6px;
+  font-family:"Times New Roman", Georgia, serif;
+  font-size:0.95rem;
+  line-height:1.6;
+  max-width:210mm;
+  margin:0 auto;
+}
+.doc-page h3{
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  margin:0 0 18px;
+}
+.doc-page p{margin:0 0 12px;text-align:justify;}
+.doc-page .doc-meta{margin-bottom:16px;}
+.doc-page .doc-meta div{margin-bottom:4px;}
+.doc-page .doc-right{text-align:right;margin-bottom:18px;}
+.doc-page .doc-sign{
+  margin-top:60px;
+  text-align:center;
+}
+.doc-page .doc-sign .line{
+  border-top:1px solid #111;
+  width:260px;
+  margin:0 auto 6px;
+}
+.doc-page .doc-section-title{
+  font-weight:700;
+  margin:18px 0 8px;
+}
+.doc-page table.firmas{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:50px;
+}
+.doc-page table.firmas td{
+  text-align:center;
+  padding-top:40px;
+  border-top:1px solid #111;
+  font-size:0.85rem;
+}
+.doc-page table.firmas tr{display:block;margin-bottom:36px;}
+
+.app-footer{
+  text-align:center;
+  color:var(--text-dim);
+  font-size:0.75rem;
+  padding:20px 16px 0;
+}
+
+/* ---- Impresión ---- */
+@media print{
+  body *{visibility:hidden;}
+  #printArea, #printArea *{visibility:visible;}
+  #printArea{position:absolute;left:0;top:0;width:100%;padding:0;}
+  .doc-page{box-shadow:none;border-radius:0;max-width:none;padding:0;}
+  .no-print{display:none !important;}
+  @page{size:A4;margin:2cm;}
+}
