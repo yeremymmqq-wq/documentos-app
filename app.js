@@ -43,6 +43,7 @@ const DOC_TYPES = {
   solicitud: {
     title: 'Solicitud',
     subtitle: 'Pedido formal a una autoridad o institución',
+    help: 'Úsala cuando necesites pedirle algo por escrito a una autoridad o institución (una constancia, un permiso, una revisión de nota, etc.). Es el documento más común en trámites universitarios y municipales.',
     fields: [
       { id: 'destinatario', label: 'Dirigido a (cargo e institución)', type: 'text', placeholder: 'Ej: Decano de la Facultad de Ingeniería - UNSAAC' },
       { id: 'ciudad', label: 'Ciudad', type: 'text', value: 'Cusco' },
@@ -50,9 +51,18 @@ const DOC_TYPES = {
       { id: 'nombre', label: 'Nombre completo del solicitante', type: 'text' },
       { id: 'dni', label: 'DNI', type: 'text' },
       { id: 'domicilio', label: 'Domicilio', type: 'text' },
-      { id: 'asunto', label: 'Asunto (resumen corto)', type: 'text', placeholder: 'Ej: Solicita constancia de matrícula' },
-      { id: 'motivo', label: 'Motivo / petición (explica con detalle)', type: 'textarea', rows: 5 }
+      { id: 'asunto', label: 'Asunto (resumen corto)', type: 'text', placeholder: 'Ej: Solicita constancia de matrícula', hint: 'Resume en pocas palabras qué estás pidiendo. Aparecerá como título del documento.' },
+      { id: 'motivo', label: 'Motivo / petición (explica con detalle)', type: 'textarea', rows: 5, hint: 'Explica qué necesitas y por qué. Empieza directo, por ejemplo: "necesito se me expida..." o "solicito la revisión de...".' }
     ],
+    example: {
+      destinatario: 'Decano de la Facultad de Ingeniería - UNSAAC',
+      ciudad: 'Cusco',
+      nombre: 'Juan Pérez Quispe',
+      dni: '70123456',
+      domicilio: 'Av. de la Cultura 733, Cusco',
+      asunto: 'Solicita constancia de matrícula',
+      motivo: 'necesito se me expida una constancia de matrícula del semestre académico actual, la cual utilizaré para trámites personales.'
+    },
     render: v => `
       <h3>Solicito: ${escapeHtml(v.asunto || '')}</h3>
       <div class="doc-meta">
@@ -74,17 +84,28 @@ const DOC_TYPES = {
   carta: {
     title: 'Carta',
     subtitle: 'Comunicación formal entre personas o instituciones',
+    help: 'Úsala para comunicarte formalmente con una persona o empresa fuera de un trámite oficial: agradecimientos, invitaciones, reclamos, presentaciones. Es más flexible que el oficio.',
     fields: [
       { id: 'ciudad', label: 'Ciudad', type: 'text', value: 'Cusco' },
       { id: 'fecha', label: 'Fecha', type: 'date', value: todayISO() },
       { id: 'destinatarioNombre', label: 'Nombre del destinatario', type: 'text' },
       { id: 'destinatarioCargo', label: 'Cargo / institución del destinatario', type: 'text' },
       { id: 'asunto', label: 'Asunto', type: 'text' },
-      { id: 'cuerpo', label: 'Contenido de la carta', type: 'textarea', rows: 6 },
+      { id: 'cuerpo', label: 'Contenido de la carta', type: 'textarea', rows: 6, hint: 'Escribe con tus palabras lo que quieres comunicar. Puedes usar varios párrafos separados por líneas nuevas.' },
       { id: 'despedida', label: 'Despedida', type: 'select', options: ['Atentamente', 'Cordialmente', 'Sin otro particular, quedo de usted'], value: 'Atentamente' },
       { id: 'remitenteNombre', label: 'Tu nombre completo', type: 'text' },
       { id: 'remitenteDatos', label: 'Tus datos adicionales (DNI, cargo, etc.)', type: 'text' }
     ],
+    example: {
+      ciudad: 'Cusco',
+      destinatarioNombre: 'Sra. María López',
+      destinatarioCargo: 'Gerente de Recursos Humanos - Empresa ABC',
+      asunto: 'Agradecimiento por pasantía',
+      cuerpo: 'Por medio de la presente deseo expresarle mi agradecimiento por la oportunidad de realizar mis prácticas pre-profesionales en su institución.\nDurante este periodo pude fortalecer mis conocimientos y adquirir experiencia valiosa para mi desarrollo profesional.',
+      despedida: 'Atentamente',
+      remitenteNombre: 'Juan Pérez Quispe',
+      remitenteDatos: 'DNI 70123456 - Estudiante de Ingeniería, UNSAAC'
+    },
     render: v => `
       <p class="doc-right">${escapeHtml(v.ciudad)}, ${fechaLarga(v.fecha)}</p>
       <div class="doc-meta">
@@ -108,21 +129,36 @@ const DOC_TYPES = {
   oficio: {
     title: 'Oficio',
     subtitle: 'Comunicación oficial entre instituciones o autoridades',
+    help: 'Se usa entre instituciones, autoridades o cargos oficiales (no entre personas particulares). Siempre lleva un número correlativo, a diferencia de la carta.',
     fields: [
-      { id: 'numero', label: 'N° de oficio', type: 'text', placeholder: 'Ej: 045-2026' },
+      { id: 'numero', label: 'N° de oficio', type: 'text', placeholder: 'Ej: 045-2026', hint: 'Es un número correlativo que cada institución asigna a sus oficios. Si no lo sabes, pregunta en mesa de partes o pon un número provisional.' },
       { id: 'siglas', label: 'Siglas de la institución (opcional)', type: 'text', placeholder: 'Ej: FIA-UNSAAC' },
       { id: 'ciudad', label: 'Ciudad', type: 'text', value: 'Cusco' },
       { id: 'fecha', label: 'Fecha', type: 'date', value: todayISO() },
       { id: 'destinatarioNombre', label: 'Nombre del destinatario', type: 'text' },
       { id: 'destinatarioCargo', label: 'Cargo del destinatario', type: 'text' },
       { id: 'asunto', label: 'Asunto', type: 'text' },
-      { id: 'referencia', label: 'Referencia (opcional)', type: 'text' },
-      { id: 'cuerpo', label: 'Cuerpo del oficio', type: 'textarea', rows: 6 },
+      { id: 'referencia', label: 'Referencia (opcional)', type: 'text', hint: 'Menciona aquí el documento anterior al que respondes, si aplica (ej: "Oficio N° 020-2026").' },
+      { id: 'cuerpo', label: 'Cuerpo del oficio', type: 'textarea', rows: 6, hint: 'Explica el motivo de la comunicación de forma directa y formal.' },
       { id: 'remitenteNombre', label: 'Nombre del remitente', type: 'text' },
       { id: 'remitenteCargo', label: 'Cargo del remitente', type: 'text' },
       { id: 'institucion', label: 'Institución del remitente', type: 'text' },
       { id: 'copias', label: 'Con copia a (opcional, uno por línea)', type: 'textarea', rows: 2 }
     ],
+    example: {
+      numero: '045-2026',
+      siglas: 'CEI-UNSAAC',
+      ciudad: 'Cusco',
+      destinatarioNombre: 'Ing. Carlos Ramírez',
+      destinatarioCargo: 'Director de la Escuela Profesional de Ingeniería Informática',
+      asunto: 'Solicitud de ambiente para evento académico',
+      referencia: '',
+      cuerpo: 'Por medio del presente me dirijo a usted con la finalidad de solicitar la asignación del auditorio principal para la realización de la "Semana de la Informática", a llevarse a cabo el próximo mes.',
+      remitenteNombre: 'Juan Pérez Quispe',
+      remitenteCargo: 'Presidente del Centro de Estudiantes',
+      institucion: 'Centro de Estudiantes de Ingeniería Informática - UNSAAC',
+      copias: ''
+    },
     render: v => `
       <h3>Oficio N° ${escapeHtml(v.numero)}${v.siglas ? '-' + escapeHtml(v.siglas) : ''}</h3>
       <p class="doc-right">${escapeHtml(v.ciudad)}, ${fechaLarga(v.fecha)}</p>
@@ -151,6 +187,7 @@ const DOC_TYPES = {
   informe: {
     title: 'Informe',
     subtitle: 'Reporte técnico o administrativo con conclusiones',
+    help: 'Úsalo para reportar por escrito el resultado de una revisión, actividad o investigación a un superior, con antecedentes, desarrollo, conclusiones y recomendaciones.',
     fields: [
       { id: 'numero', label: 'N° de informe', type: 'text', placeholder: 'Ej: 012-2026' },
       { id: 'ciudad', label: 'Ciudad', type: 'text', value: 'Cusco' },
@@ -159,11 +196,23 @@ const DOC_TYPES = {
       { id: 'remitente', label: 'De (tu nombre y cargo)', type: 'text' },
       { id: 'asunto', label: 'Asunto', type: 'text' },
       { id: 'referencia', label: 'Referencia (opcional)', type: 'text' },
-      { id: 'antecedentes', label: 'Antecedentes', type: 'textarea', rows: 4 },
-      { id: 'desarrollo', label: 'Análisis / desarrollo', type: 'textarea', rows: 5 },
-      { id: 'conclusiones', label: 'Conclusiones', type: 'textarea', rows: 3 },
-      { id: 'recomendaciones', label: 'Recomendaciones', type: 'textarea', rows: 3 }
+      { id: 'antecedentes', label: 'Antecedentes', type: 'textarea', rows: 4, hint: 'El contexto: qué encargo, pedido o situación dio origen a este informe.' },
+      { id: 'desarrollo', label: 'Análisis / desarrollo', type: 'textarea', rows: 5, hint: 'Lo que hiciste o encontraste: hechos, datos, evaluación de la situación.' },
+      { id: 'conclusiones', label: 'Conclusiones', type: 'textarea', rows: 3, hint: 'Resume en pocas ideas el resultado principal del análisis.' },
+      { id: 'recomendaciones', label: 'Recomendaciones', type: 'textarea', rows: 3, hint: 'Qué acción sugieres tomar a partir de las conclusiones.' }
     ],
+    example: {
+      numero: '012-2026',
+      ciudad: 'Cusco',
+      destinatario: 'Ing. Carlos Ramírez, Director de Escuela',
+      remitente: 'Juan Pérez Quispe, Asistente Académico',
+      asunto: 'Resultado de la revisión del laboratorio de cómputo',
+      referencia: '',
+      antecedentes: 'Mediante memorando se me encargó verificar el estado operativo de los equipos del laboratorio de cómputo N° 2.',
+      desarrollo: 'Se revisaron 20 equipos, de los cuales 15 funcionan correctamente y 5 presentan fallas de encendido o lentitud excesiva.',
+      conclusiones: 'El laboratorio opera al 75% de su capacidad total, lo cual limita el dictado de clases con grupos completos.',
+      recomendaciones: 'Se recomienda gestionar el mantenimiento correctivo de los 5 equipos observados antes del inicio del próximo semestre.'
+    },
     render: v => `
       <h3>Informe N° ${escapeHtml(v.numero)}</h3>
       <div class="doc-meta">
@@ -194,6 +243,7 @@ const DOC_TYPES = {
   acta: {
     title: 'Acta',
     subtitle: 'Registro formal de una reunión o hecho',
+    help: 'Deja constancia por escrito de lo tratado y acordado en una reunión, entrega de cargo u otro hecho, con la lista de quienes participaron.',
     fields: [
       { id: 'tipo', label: 'Tipo de acta', type: 'text', placeholder: 'Ej: Acta de Reunión de Coordinación', value: 'Acta de Reunión' },
       { id: 'lugar', label: 'Lugar', type: 'text' },
@@ -201,11 +251,22 @@ const DOC_TYPES = {
       { id: 'fecha', label: 'Fecha', type: 'date', value: todayISO() },
       { id: 'horaInicio', label: 'Hora de inicio', type: 'time' },
       { id: 'horaFin', label: 'Hora de finalización', type: 'time' },
-      { id: 'participantes', label: 'Participantes (uno por línea)', type: 'textarea', rows: 4 },
-      { id: 'agenda', label: 'Temas tratados', type: 'textarea', rows: 4 },
-      { id: 'acuerdos', label: 'Acuerdos', type: 'textarea', rows: 4 },
+      { id: 'participantes', label: 'Participantes (uno por línea)', type: 'textarea', rows: 4, hint: 'Escribe un nombre por línea. Cada uno tendrá su propia línea de firma en el documento.' },
+      { id: 'agenda', label: 'Temas tratados', type: 'textarea', rows: 4, hint: 'Lista los puntos discutidos, uno por línea si son varios.' },
+      { id: 'acuerdos', label: 'Acuerdos', type: 'textarea', rows: 4, hint: 'Lo que se decidió o se acordó hacer, uno por línea si son varios.' },
       { id: 'observaciones', label: 'Observaciones (opcional)', type: 'textarea', rows: 2 }
     ],
+    example: {
+      tipo: 'Acta de Reunión de Coordinación',
+      lugar: 'Sala de reuniones de la Facultad de Ingeniería',
+      ciudad: 'Cusco',
+      horaInicio: '10:00',
+      horaFin: '11:15',
+      participantes: 'Juan Pérez Quispe\nMaría Condori Huamán\nLuis Sánchez Flores',
+      agenda: 'Revisión del cronograma de actividades del semestre.\nCoordinación del evento de bienvenida a nuevos estudiantes.',
+      acuerdos: 'Se acuerda fijar el evento de bienvenida para la tercera semana del semestre.\nSe designa a María Condori como responsable de logística.',
+      observaciones: ''
+    },
     render: v => {
       const participantes = (v.participantes || '').split(/\n+/).map(s => s.trim()).filter(Boolean);
       const firmasRows = participantes.map(p => `<tr><td>${escapeHtml(p)}</td></tr>`).join('');
@@ -227,16 +288,26 @@ const DOC_TYPES = {
   declaracion: {
     title: 'Declaración Jurada',
     subtitle: 'Manifestación formal bajo juramento',
+    help: 'Se usa cuando una institución te pide afirmar algo bajo tu responsabilidad (domicilio, ingresos, situación laboral, veracidad de datos) sin necesidad de otro documento que lo pruebe.',
     fields: [
       { id: 'nombre', label: 'Nombre completo', type: 'text' },
       { id: 'dni', label: 'DNI', type: 'text' },
       { id: 'nacionalidad', label: 'Nacionalidad', type: 'text', value: 'peruana' },
       { id: 'domicilio', label: 'Domicilio', type: 'text' },
-      { id: 'declaracion', label: 'Declaro bajo juramento que...', type: 'textarea', rows: 5 },
+      { id: 'declaracion', label: 'Declaro bajo juramento que...', type: 'textarea', rows: 5, hint: 'Escribe exactamente el hecho que estás afirmando. Sé específico y directo, ej: "resido en la dirección arriba indicada desde el año 2022".' },
       { id: 'finalidad', label: 'Finalidad / institución ante la que se presenta', type: 'text', placeholder: 'Ej: la UNSAAC, para trámite de matrícula' },
       { id: 'ciudad', label: 'Ciudad', type: 'text', value: 'Cusco' },
       { id: 'fecha', label: 'Fecha', type: 'date', value: todayISO() }
     ],
+    example: {
+      nombre: 'Juan Pérez Quispe',
+      dni: '70123456',
+      nacionalidad: 'peruana',
+      domicilio: 'Av. de la Cultura 733, Cusco',
+      declaracion: 'resido en la dirección arriba indicada desde el mes de enero de 2023, y que la información proporcionada es verídica.',
+      finalidad: 'la UNSAAC, para trámite de actualización de datos',
+      ciudad: 'Cusco'
+    },
     render: v => `
       <h3>Declaración Jurada</h3>
       <p>Yo, ${escapeHtml(v.nombre)}, identificado(a) con DNI N° ${escapeHtml(v.dni)}, de nacionalidad ${escapeHtml(v.nacionalidad)}, con domicilio en ${escapeHtml(v.domicilio)}, DECLARO BAJO JURAMENTO que:</p>
@@ -276,12 +347,41 @@ function buildHomeGrid() {
   });
 }
 
+function fillForm(key, values) {
+  const type = DOC_TYPES[key];
+  type.fields.forEach(f => {
+    const el = document.getElementById('field_' + f.id);
+    if (el && values[f.id] !== undefined) el.value = values[f.id];
+  });
+}
+
 function openForm(key) {
   currentType = key;
   const type = DOC_TYPES[key];
   document.getElementById('formTitle').textContent = type.title;
   const container = document.getElementById('formFields');
   container.innerHTML = '';
+
+  if (type.help) {
+    const helpBox = document.createElement('div');
+    helpBox.className = 'help-box';
+    helpBox.innerHTML = `<strong>¿Cuándo se usa?</strong> ${escapeHtml(type.help)}`;
+    container.appendChild(helpBox);
+  }
+
+  if (type.example) {
+    const exampleBtn = document.createElement('button');
+    exampleBtn.type = 'button';
+    exampleBtn.className = 'btn-secondary';
+    exampleBtn.textContent = '💡 Ver / usar un ejemplo ya redactado';
+    exampleBtn.addEventListener('click', () => {
+      if (confirm('Esto va a rellenar el formulario con un ejemplo. ¿Continuar? (luego puedes editar cada campo con tus propios datos)')) {
+        fillForm(key, type.example);
+      }
+    });
+    container.appendChild(exampleBtn);
+  }
+
   type.fields.forEach(f => {
     const label = document.createElement('label');
     label.textContent = f.label;
@@ -308,6 +408,13 @@ function openForm(key) {
     input.id = 'field_' + f.id;
     if (f.value !== undefined) input.value = f.value;
     container.appendChild(input);
+
+    if (f.hint) {
+      const hintEl = document.createElement('div');
+      hintEl.className = 'field-hint';
+      hintEl.textContent = f.hint;
+      container.appendChild(hintEl);
+    }
   });
   showView('view-form');
 }

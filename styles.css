@@ -116,6 +116,39 @@ textarea{resize:vertical;}
 }
 .btn-lg{width:100%;}
 
+.btn-secondary{
+  width:100%;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card-2);
+  color:var(--text);
+  font-size:0.9rem;
+  font-weight:600;
+  margin-bottom:14px;
+}
+
+.help-box{
+  background:var(--card-2);
+  border:1px solid var(--border);
+  border-left:3px solid var(--accent);
+  border-radius:8px;
+  padding:12px;
+  font-size:0.85rem;
+  color:var(--text-dim);
+  line-height:1.5;
+  margin-bottom:14px;
+}
+.help-box strong{color:var(--text);}
+
+.field-hint{
+  font-size:0.78rem;
+  color:var(--text-dim);
+  margin-top:-2px;
+  margin-bottom:2px;
+  line-height:1.4;
+}
+
 /* ---- Documento (pantalla) ---- */
 #printArea{
   padding:0 16px;
