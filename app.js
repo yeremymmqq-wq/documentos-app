@@ -320,6 +320,89 @@ const DOC_TYPES = {
         <div>DNI: ${escapeHtml(v.dni)}</div>
       </div>
     `
+  },
+
+  memorando: {
+    title: 'Memorando',
+    subtitle: 'Comunicación breve dentro de una misma institución',
+    help: 'Se usa para comunicaciones internas y directas entre áreas o personas de la misma institución (no entre instituciones distintas, para eso es el oficio). Es más corto y directo que un oficio.',
+    fields: [
+      { id: 'numero', label: 'N° de memorando', type: 'text', placeholder: 'Ej: 010-2026' },
+      { id: 'siglas', label: 'Siglas de la institución/área (opcional)', type: 'text', placeholder: 'Ej: FIA-UNSAAC' },
+      { id: 'ciudad', label: 'Ciudad', type: 'text', value: 'Cusco' },
+      { id: 'fecha', label: 'Fecha', type: 'date', value: todayISO() },
+      { id: 'destinatarioNombre', label: 'Nombre del destinatario', type: 'text' },
+      { id: 'destinatarioCargo', label: 'Cargo del destinatario', type: 'text' },
+      { id: 'remitenteNombre', label: 'Nombre del remitente', type: 'text' },
+      { id: 'remitenteCargo', label: 'Cargo del remitente', type: 'text' },
+      { id: 'asunto', label: 'Asunto', type: 'text' },
+      { id: 'cuerpo', label: 'Cuerpo del memorando', type: 'textarea', rows: 5, hint: 'Ve directo al punto: qué se comunica, pide o dispone. Los memorandos son breves.' }
+    ],
+    example: {
+      numero: '010-2026',
+      siglas: 'FIA-UNSAAC',
+      ciudad: 'Cusco',
+      destinatarioNombre: 'Ing. Luis Sánchez Flores',
+      destinatarioCargo: 'Jefe de Laboratorio de Cómputo',
+      remitenteNombre: 'Ing. Carlos Ramírez',
+      remitenteCargo: 'Director de la Escuela Profesional',
+      asunto: 'Verificación de equipos del laboratorio',
+      cuerpo: 'Se le encarga verificar el estado operativo de los equipos del laboratorio de cómputo N° 2 y remitir un informe con los resultados antes del viernes de la presente semana.'
+    },
+    render: v => `
+      <h3>Memorando N° ${escapeHtml(v.numero)}${v.siglas ? '-' + escapeHtml(v.siglas) : ''}</h3>
+      <div class="doc-meta">
+        <div><strong>A:</strong> ${escapeHtml(v.destinatarioNombre)}, ${escapeHtml(v.destinatarioCargo)}</div>
+        <div><strong>De:</strong> ${escapeHtml(v.remitenteNombre)}, ${escapeHtml(v.remitenteCargo)}</div>
+        <div><strong>Asunto:</strong> ${escapeHtml(v.asunto)}</div>
+        <div><strong>Fecha:</strong> ${escapeHtml(v.ciudad)}, ${fechaLarga(v.fecha)}</div>
+      </div>
+      ${nl2p(v.cuerpo)}
+      <p>Sin otro particular, quedo de usted.</p>
+      <p>Atentamente,</p>
+      <div class="doc-sign">
+        <div class="line"></div>
+        <div>${escapeHtml(v.remitenteNombre)}</div>
+        <div>${escapeHtml(v.remitenteCargo)}</div>
+      </div>
+    `
+  },
+
+  cartaPoder: {
+    title: 'Carta Poder Simple',
+    subtitle: 'Autoriza a otra persona a realizar un trámite por ti',
+    help: 'Se usa cuando no puedes hacer un trámite en persona (banco, RENIEC, SUNAT, municipalidad, universidad) y necesitas autorizar a alguien de confianza a hacerlo por ti. No requiere notario para trámites administrativos simples (Art. 126.1 del TUO de la Ley N° 27444).',
+    fields: [
+      { id: 'otorganteNombre', label: 'Tu nombre completo (quien otorga el poder)', type: 'text' },
+      { id: 'otorganteDni', label: 'Tu DNI', type: 'text' },
+      { id: 'otorganteDomicilio', label: 'Tu domicilio', type: 'text' },
+      { id: 'apoderadoNombre', label: 'Nombre completo de la persona autorizada', type: 'text' },
+      { id: 'apoderadoDni', label: 'DNI de la persona autorizada', type: 'text' },
+      { id: 'tramite', label: '¿Para qué trámite específico?', type: 'textarea', rows: 3, hint: 'Sé específico: qué debe hacer, dónde, y para qué. Ej: "recoger mi certificado de estudios en la Oficina de Registros Académicos".' },
+      { id: 'ciudad', label: 'Ciudad', type: 'text', value: 'Cusco' },
+      { id: 'fecha', label: 'Fecha', type: 'date', value: todayISO() }
+    ],
+    example: {
+      otorganteNombre: 'Juan Pérez Quispe',
+      otorganteDni: '70123456',
+      otorganteDomicilio: 'Av. de la Cultura 733, Cusco',
+      apoderadoNombre: 'María Condori Huamán',
+      apoderadoDni: '71234567',
+      tramite: 'recoger mi certificado de estudios y constancia de matrícula en la Oficina de Registros Académicos de la UNSAAC.',
+      ciudad: 'Cusco'
+    },
+    render: v => `
+      <h3>Carta Poder Simple</h3>
+      <p>El suscrito, ${escapeHtml(v.otorganteNombre)}, identificado(a) con DNI N° ${escapeHtml(v.otorganteDni)}, con domicilio en ${escapeHtml(v.otorganteDomicilio)}, otorgo poder simple a ${escapeHtml(v.apoderadoNombre)}, identificado(a) con DNI N° ${escapeHtml(v.apoderadoDni)}, para que en mi nombre y representación realice el siguiente trámite:</p>
+      <p>${escapeHtml(v.tramite)}</p>
+      <p>La presente carta poder se otorga de conformidad con el artículo 126.1 del Texto Único Ordenado de la Ley N° 27444 - Ley del Procedimiento Administrativo General, que no exige formalidad notarial para el otorgamiento de poder en trámites administrativos simples.</p>
+      <p class="doc-right">${escapeHtml(v.ciudad)}, ${fechaLarga(v.fecha)}</p>
+      <div class="doc-sign">
+        <div class="line"></div>
+        <div>${escapeHtml(v.otorganteNombre)}</div>
+        <div>DNI: ${escapeHtml(v.otorganteDni)}</div>
+      </div>
+    `
   }
 };
 
@@ -437,3 +520,70 @@ document.getElementById('btnPrint').addEventListener('click', () => {
 });
 
 buildHomeGrid();
+
+/* ==========================================================
+   ASISTENTE DE AYUDA (preguntas frecuentes, sin IA, offline)
+   ========================================================== */
+const docList = Object.keys(DOC_TYPES).map(k => `<strong>${escapeHtml(DOC_TYPES[k].title)}</strong>: ${escapeHtml(DOC_TYPES[k].help || '')}`).join('<br><br>');
+
+const FAQ = [
+  {
+    q: '¿Qué documento debo usar según lo que necesito?',
+    a: docList
+  },
+  {
+    q: '¿Cómo exporto el documento a PDF?',
+    a: 'Después de tocar "Generar documento", toca "Descargar / Imprimir PDF". Se abrirá el diálogo de impresión de tu dispositivo: en iPhone elige "Guardar en Archivos" o comparte como PDF; en Android/PC elige "Guardar como PDF".'
+  },
+  {
+    q: '¿Necesito internet para usar la app?',
+    a: 'No. Una vez que la abriste la primera vez (instalada desde la pantalla de inicio), funciona completamente sin conexión.'
+  },
+  {
+    q: '¿Qué hace el botón "Ver / usar un ejemplo ya redactado"?',
+    a: 'Rellena todos los campos del formulario con un caso ya escrito, para que veas cómo se redacta. Luego puedes editar cada campo con tus propios datos antes de generar tu documento real.'
+  },
+  {
+    q: '¿Puedo editar el documento después de generarlo?',
+    a: 'Sí. En la vista previa toca "Editar" para volver al formulario, corrige lo que necesites y vuelve a tocar "Generar documento".'
+  },
+  {
+    q: '¿Estos documentos son válidos legalmente?',
+    a: 'Te dan una redacción y estructura formal correcta, basada en el formato oficial peruano usado en instituciones públicas y privadas. Aun así, revisa si la institución donde lo presentarás exige un formato propio, firma legalizada, o algún requisito adicional.'
+  }
+];
+
+function buildFaqPanel() {
+  const panel = document.getElementById('faqPanel');
+  panel.innerHTML = FAQ.map((item, i) => `
+    <div class="faq-item">
+      <button type="button" class="faq-question" data-i="${i}">${escapeHtml(item.q)} <span class="faq-arrow">›</span></button>
+      <div class="faq-answer" id="faqAnswer${i}">${item.a}</div>
+    </div>
+  `).join('');
+
+  panel.querySelectorAll('.faq-question').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const answer = document.getElementById('faqAnswer' + btn.dataset.i);
+      const isOpen = answer.classList.contains('open');
+      panel.querySelectorAll('.faq-answer.open').forEach(a => a.classList.remove('open'));
+      panel.querySelectorAll('.faq-question.open').forEach(q => q.classList.remove('open'));
+      if (!isOpen) {
+        answer.classList.add('open');
+        btn.classList.add('open');
+      }
+    });
+  });
+}
+
+buildFaqPanel();
+
+document.getElementById('btnHelp').addEventListener('click', () => {
+  document.getElementById('faqOverlay').classList.add('open');
+});
+document.getElementById('btnCloseFaq').addEventListener('click', () => {
+  document.getElementById('faqOverlay').classList.remove('open');
+});
+document.getElementById('faqOverlay').addEventListener('click', e => {
+  if (e.target.id === 'faqOverlay') e.currentTarget.classList.remove('open');
+});
